@@ -79,7 +79,7 @@ class TodoApp(tk.Tk):
         cursor = conn.cursor()
         cursor.execute(""" 
             UPDATE tache SET Id_Etat = (SELECT Id_Etat FROM etat WHERE libelle_etat = 'en cours') 
-            WHERE libelle = %s AND Id_Etat = (SELECT Id_Etat FROM etat WHERE libelle_et at = 'à faire') 
+            WHERE libelle = %s AND Id_Etat = (SELECT Id_Etat FROM etat WHERE libelle_etat = 'à faire') 
         """, (libelle,))
         conn.commit()
         cursor.close()
@@ -112,5 +112,41 @@ class TodoApp(tk.Tk):
         conn.commit()
         cursor.close()
         conn.close()
+
+    def modifier_tache(self):
+        selected = self.listbox.get(self.listbox.curselection())
+        libelle_original = selected.split(" - ")[0]
+        
+        libelle_nouveau = simpledialog.askstring("Modifier Tâche", "Entrez le nouveau libellé de la tâche:", initialvalue=libelle_original)
+        date_fixee_nouveau = simpledialog.askstring("Modifier Tâche", "Entrez la nouvelle date fixée (YYYY-MM-DD) ou laissez vide si inchangée:")
+        
+        if libelle_nouveau and date_fixee_nouveau:
+            conn = connect_to_db()
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE tache SET libelle = %s, date_fixee = %s WHERE libelle = %s
+            """, (libelle_nouveau, date_fixee_nouveau, libelle_original))
+            conn.commit()
+            cursor.close()
+            conn.close()
+            messagebox.showinfo("Succès", "Tâche modifiée.")
+            self.afficher_taches()
+        elif libelle_nouveau:
+            conn = connect_to_db()
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE tache SET libelle = %s WHERE libelle = %s
+            """, (libelle_nouveau, libelle_original))
+            conn.commit()
+            cursor.close()
+            conn.close()
+            messagebox.showinfo("Succès", "Tâche modifiée.")
+            self.afficher_taches()
+
+if __name__ == "__main__":
+    app = TodoApp()
+    app.mainloop()
+
+
 
 
