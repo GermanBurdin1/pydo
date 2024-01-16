@@ -6,7 +6,7 @@ import mysql.connector
 db_config = {
     'host': 'localhost',
     'user': 'votre_user',
-    'password': 'votre_password',
+    'password': '123',
     'database': 'pydo'
 }
 
@@ -20,7 +20,7 @@ class TodoApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Gestionnaire de Todolist')
-        self.geometry("400x300")  # Définit la taille de la fenêtre
+        self.geometry("500x500")  # Définit la taille de la fenêtre
 
         self.listbox = Listbox(self)
         self.listbox.pack(fill=tk.BOTH, expand=True)
@@ -56,6 +56,7 @@ class TodoApp(tk.Tk):
             self.listbox.insert(tk.END, f"{libelle} - {libelle_etat}")
         cursor.close()
         conn.close()
+
     def ajouter_tache(self):
         libelle = simpledialog.askstring("Ajouter Tâche", "Entrez le libellé de la tâche:")
         date_fixee = simpledialog.askstring("Ajouter Tâche", "Entrez la date fixée (YYYY-MM-DD):")
@@ -63,7 +64,7 @@ class TodoApp(tk.Tk):
             conn = connect_to_db()
             cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO tache (libelle, date_creation, date_fixee, Id_Etat)
+                INSERT INTO tache (libelle, date_creation, date_fixee, id_Etat)
                 VALUES (%s, NOW(), %s, (SELECT Id_Etat FROM etat WHERE libelle_etat = 'à faire'))
             """, (libelle, date_fixee))
             conn.commit()
@@ -86,6 +87,7 @@ class TodoApp(tk.Tk):
         conn.close()
         messagebox.showinfo("Succès", "Tâche démarrée.")
         self.afficher_taches()
+
     def finaliser_tache(self):
         selected = self.listbox.get(self.listbox.curselection())
         libelle = selected.split(" - ")[0]
@@ -143,6 +145,7 @@ class TodoApp(tk.Tk):
             messagebox.showinfo("Succès", "Tâche modifiée.")
             self.afficher_taches()
 
+# vérification si l'appli est executée directement
 if __name__ == "__main__":
     app = TodoApp()
     app.mainloop()
