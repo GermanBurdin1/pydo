@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import simpledialog, messagebox, Listbox, Button
+from tkinter import simpledialog, messagebox, Listbox, Button, font
 import mysql.connector
 
 # Configuration de la connexion à la base de données
@@ -24,24 +24,34 @@ class TodoApp(tk.Tk):
 
         self.listbox = Listbox(self)
         self.listbox.pack(fill=tk.BOTH, expand=True)
+        self.listbox.configure(bg="#F1EAFF")
 
-        self.refresh_button = Button(self, text="Rafraîchir la liste", command=self.afficher_taches)
-        self.refresh_button.pack()
+        button_font = font.Font(family='Arial', size=10)
 
-        self.add_task_button = Button(self, text="Ajouter une tâche", command=self.ajouter_tache)
-        self.add_task_button.pack()
+        self.refresh_button = Button(self, text="Rafraîchir la liste", command=self.afficher_taches, font = button_font)
+        self.refresh_button.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        self.refresh_button.configure(bg="#DCBFFF")
 
-        self.start_task_button = Button(self, text="Démarrer une tâche", command=self.demarrer_tache)
-        self.start_task_button.pack()
+        self.add_task_button = Button(self, text="Ajouter une tâche", command=self.ajouter_tache, font = button_font)
+        self.add_task_button.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        self.add_task_button.configure(bg="#DCBFFF")
 
-        self.finish_task_button = Button(self, text="Finaliser une tâche", command=self.finaliser_tache)
-        self.finish_task_button.pack()
+        self.start_task_button = Button(self, text="Démarrer une tâche", command=self.demarrer_tache, font = button_font)
+        self.start_task_button.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        self.start_task_button.configure(bg="#DCBFFF")
 
-        self.delete_task_button = Button(self, text="Supprimer une tâche", command=self.supprimer_tache)
-        self.delete_task_button.pack()
+        self.finish_task_button = Button(self, text="Finaliser une tâche", command=self.finaliser_tache, font = button_font)
+        self.finish_task_button.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        self.finish_task_button.configure(bg="#DCBFFF")
 
-        self.modify_task_button = Button(self, text="Modifier une tâche", command=self.modifier_tache)
-        self.modify_task_button.pack()
+        self.delete_task_button = Button(self, text="Supprimer une tâche", command=self.supprimer_tache, font = button_font)
+        self.delete_task_button.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        self.delete_task_button.configure(bg="#DCBFFF")
+
+        self.modify_task_button = Button(self, text="Modifier une tâche", command=self.modifier_tache, font = button_font)
+        self.modify_task_button.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        self.modify_task_button.configure(bg="#DCBFFF")
+
 
     def afficher_taches(self):
         self.listbox.delete(0, tk.END)  # Efface la liste actuelle
